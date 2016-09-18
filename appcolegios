@@ -1,0 +1,39 @@
+server {
+        listen 80;
+        root /var/www/html/app_colegios;
+        index index.php index.html index.htm;
+        server_name appcolegios.dev;
+ 
+    location / {
+        try_files $uri $uri/ /index.php?q=$uri&$args;
+    }
+ 
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+    }
+ 
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+ 
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+ 
+    location ~ /\. {
+        deny all;
+    }
+ 
+    location ~* /(?:uploads|files)/.*\.php$ {
+        deny all;
+    }
+ 
+    ####### PHPMYADMIN #######
+ 
+}
